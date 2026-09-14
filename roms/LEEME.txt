@@ -1,0 +1,17 @@
+NFC GAMES - ESTRUCTURA INICIAL
+
+1. index.html
+   Es la portada del sitio.
+
+2. juegos/juego-1/index.html
+   Es la página que cargará EmulatorJS para el primer juego.
+
+3. roms/juego-1.gb
+   Debes agregar tú este archivo.
+   Usa únicamente una ROM propia/homebrew o una que tengas autorización para distribuir.
+
+IMPORTANTE:
+- No cambies EJS_gameID después de empezar a usar el juego.
+- Cada juego nuevo debe tener un EJS_gameID diferente.
+- La etiqueta NFC NO lleva la ROM: solo llevará la URL pública de la página.
+- En GitHub Pages, los archivos publicados son accesibles públicamente.

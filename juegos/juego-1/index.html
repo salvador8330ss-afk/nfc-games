@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <title>Juego 1</title>
+
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      overflow: hidden;
+    }
+
+    #game {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="game"></div>
+
+  <script>
+    // Elemento donde aparecerá EmulatorJS.
+    EJS_player = "#game";
+
+    // Consola: Nintendo Game Boy.
+    EJS_core = "gb";
+
+    // Nombre visible y usado para identificar archivos/estados.
+    EJS_gameName = "Juego 1";
+
+    // ID ÚNICO para este juego. No reutilices este número en otro juego.
+    EJS_gameID = 1001;
+
+    // ROM. Este archivo debe existir en /roms/juego-1.gb
+    EJS_gameUrl = "../../roms/juego-1.gb";
+
+    // Archivos de EmulatorJS desde su CDN oficial.
+    EJS_pathtodata = "https://cdn.emulatorjs.org/stable/data/";
+
+    // Intenta iniciar al cargar. En algunos móviles será necesario tocar la pantalla.
+    EJS_startOnLoaded = true;
+
+    // Fuerza el volcado periódico del archivo de guardado del core.
+    EJS_fixedSaveInterval = 10000;
+  </script>
+
+  <script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
+</body>
+</html>
