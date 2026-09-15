@@ -1,30 +1,152 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
+
 <head>
+
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
   <title>NFC Games</title>
+
   <style>
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      font-family: system-ui, sans-serif;
-      background: #111;
-      color: #fff;
-      text-align: center;
-      padding: 24px;
+
+    * {
       box-sizing: border-box;
     }
-    a { color: #9ecbff; }
+
+    body {
+
+      margin: 0;
+      min-height: 100vh;
+
+      background: #111;
+      color: white;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      padding: 25px;
+
+    }
+
+    .contenedor {
+
+      width: 100%;
+      max-width: 420px;
+
+      text-align: center;
+
+    }
+
+    h1 {
+
+      margin-bottom: 8px;
+
+    }
+
+    p {
+
+      color: #bbb;
+      margin-bottom: 30px;
+
+    }
+
+    .juego {
+
+      display: block;
+
+      width: 100%;
+
+      padding: 18px;
+
+      margin-bottom: 15px;
+
+      background: #222;
+
+      border: 1px solid #444;
+      border-radius: 12px;
+
+      color: white;
+
+      text-decoration: none;
+
+      font-size: 18px;
+      font-weight: bold;
+
+    }
+
+    .juego:active {
+
+      transform: scale(0.98);
+
+    }
+
+    .nota {
+
+      margin-top: 35px;
+
+      font-size: 13px;
+      color: #777;
+
+    }
+
   </style>
+
 </head>
+
+
 <body>
-  <main>
+
+
+  <div class="contenedor">
+
+
     <h1>NFC Games</h1>
-    <p>Servidor funcionando correctamente.</p>
-    <p><a href="./juegos/juego-1/">Abrir Juego 1</a></p>
-  </main>
+
+    <p>
+      Panel de pruebas
+    </p>
+
+
+    <a
+      class="juego"
+      href="./juegos/juego-1/">
+
+      Juego 1
+
+    </a>
+
+
+    <a
+      class="juego"
+      href="./juegos/juego-2/">
+
+      Juego 2
+
+    </a>
+
+
+    <div class="nota">
+
+      Cada juego conserva
+      su propia partida.
+
+    </div>
+
+
+  </div>
+
+
 </body>
+
 </html>
