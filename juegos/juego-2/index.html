@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+  >
+
+  <title>Juego 2 - NFC Games</title>
+
+  <!-- ESTILOS DE BINJGB -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/binji/binjgb@main/docs/simple.css"
+  >
+
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      overflow: hidden;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <!-- PANTALLA DEL JUEGO -->
+  <div id="game">
+    <canvas
+      id="mainCanvas"
+      width="160"
+      height="144">
+    </canvas>
+  </div>
+
+
+  <!-- CONTROLES -->
+  <div id="controller">
+
+    <div id="controller_dpad">
+      <div id="controller_left"></div>
+      <div id="controller_right"></div>
+      <div id="controller_up"></div>
+      <div id="controller_down"></div>
+    </div>
+
+    <div
+      id="controller_select"
+      class="capsuleBtn">
+      Select
+    </div>
+
+    <div
+      id="controller_start"
+      class="capsuleBtn">
+      Start
+    </div>
+
+    <div
+      id="controller_b"
+      class="roundBtn">
+      B
+    </div>
+
+    <div
+      id="controller_a"
+      class="roundBtn">
+      A
+    </div>
+
+  </div>
+
+
+  <!-- ======================================== -->
+  <!-- SELECCIONAR LA ROM                       -->
+  <!-- ======================================== -->
+
+  <script>
+
+    /*
+      BINJGB normalmente intenta cargar:
+
+      porklike.gb
+
+      Nosotros interceptamos esa petición
+      para que cargue:
+
+      /roms/juego-2.gb
+    */
+
+    const fetchOriginal =
+      window.fetch.bind(window);
+
+    window.fetch =
+      function(recurso, opciones) {
+
+        const url =
+          typeof recurso === "string"
+          ? recurso
+          : recurso.url;
+
+        if (
+          url.endsWith("porklike.gb")
+        ) {
+
+          return fetchOriginal(
+            "../../roms/juego-2.gb",
+            opciones
+          );
+
+        }
+
+        return fetchOriginal(
+          recurso,
+          opciones
+        );
+
+      };
+
+  </script>
+
+
+  <!-- ======================================== -->
+  <!-- PARTIDA INDEPENDIENTE DE JUEGO 2        -->
+  <!-- ======================================== -->
+
+  <script>
+
+    (() => {
+
+      /*
+        ESTE NOMBRE IDENTIFICA EL GUARDADO
+        DE ESTE JUEGO.
+      */
+
+      const PREFIJO =
+        "juego-2_";
+
+
+      const getOriginal =
+        Storage.prototype.getItem;
+
+      const setOriginal =
+        Storage.prototype.setItem;
+
+      const removeOriginal =
+        Storage.prototype.removeItem;
+
+
+      const clavesDelJuego = [
+        "saveState",
+        "extram"
+      ];
+
+
+      function nuevaClave(clave) {
+
+        if (
+          clavesDelJuego.includes(clave)
+        ) {
+
+          return (
+            PREFIJO + clave
+          );
+
+        }
+
+        return clave;
+
+      }
+
+
+      /*
+        MIGRAR UN GUARDADO ANTIGUO
+        SOLO SI EXISTIERA.
+      */
+
+      clavesDelJuego.forEach(
+
+        (clave) => {
+
+          const claveNueva =
+            PREFIJO + clave;
+
+          const guardadoNuevo =
+
+            getOriginal.call(
+              localStorage,
+              claveNueva
+            );
+
+          const guardadoAnterior =
+
+            getOriginal.call(
+              localStorage,
+              clave
+            );
+
+          if (
+            guardadoNuevo === null &&
+            guardadoAnterior !== null
+          ) {
+
+            setOriginal.call(
+              localStorage,
+              claveNueva,
+              guardadoAnterior
+            );
+
+          }
+
+        }
+
+      );
+
+
+      /*
+        INTERCEPTAR LECTURA
+      */
+
+      Storage.prototype.getItem =
+
+        function(clave) {
+
+          if (
+            this === localStorage
+          ) {
+
+            clave =
+              nuevaClave(clave);
+
+          }
+
+          return getOriginal.call(
+            this,
+            clave
+          );
+
+        };
+
+
+      /*
+        INTERCEPTAR GUARDADO
+      */
+
+      Storage.prototype.setItem =
+
+        function(clave, valor) {
+
+          if (
+            this === localStorage
+          ) {
+
+            clave =
+              nuevaClave(clave);
+
+          }
+
+          return setOriginal.call(
+            this,
+            clave,
+            valor
+          );
+
+        };
+
+
+      /*
+        INTERCEPTAR BORRADO
+      */
+
+      Storage.prototype.removeItem =
+
+        function(clave) {
+
+          if (
+            this === localStorage
+          ) {
+
+            clave =
+              nuevaClave(clave);
+
+          }
+
+          return removeOriginal.call(
+            this,
+            clave
+          );
+
+        };
+
+    })();
+
+  </script>
+
+
+  <!-- ======================================== -->
+  <!-- CARGAR BINJGB                           -->
+  <!-- ======================================== -->
+
+  <script
+    src="https://cdn.jsdelivr.net/gh/binji/binjgb@main/docs/binjgb.js">
+  </script>
+
+  <script
+    src="https://cdn.jsdelivr.net/gh/binji/binjgb@main/docs/simple.js">
+  </script>
+
+
+  <!-- ======================================== -->
+  <!-- AUTOGUARDADO                            -->
+  <!-- ======================================== -->
+
+  <script>
+
+    let estadoRestaurado =
+      false;
+
+
+    const esperarEmulador =
+
+      setInterval(
+
+        () => {
+
+          if (
+            typeof emulator !==
+              "undefined"
+
+            &&
+
+            emulator
+
+            &&
+
+            !estadoRestaurado
+          ) {
+
+            estadoRestaurado =
+              true;
+
+            clearInterval(
+              esperarEmulador
+            );
+
+
+            /*
+              RECUPERAR AUTOMÁTICAMENTE
+              LA PARTIDA.
+            */
+
+            if (
+              localStorage.getItem(
+                "saveState"
+              )
+            ) {
+
+              try {
+
+                emulator.loadState();
+
+                console.log(
+                  "Partida restaurada"
+                );
+
+              }
+
+              catch (error) {
+
+                console.log(
+                  "No se pudo restaurar la partida:",
+                  error
+                );
+
+              }
+
+            }
+
+
+            /*
+              GUARDAR AUTOMÁTICAMENTE
+              CADA 10 SEGUNDOS.
+            */
+
+            setInterval(
+
+              () => {
+
+                try {
+
+                  if (emulator) {
+
+                    emulator.saveState();
+
+                    console.log(
+                      "Partida guardada automáticamente"
+                    );
+
+                  }
+
+                }
+
+                catch (error) {
+
+                  console.log(
+                    "Error al guardar:",
+                    error
+                  );
+
+                }
+
+              },
+
+              10000
+
+            );
+
+          }
+
+        },
+
+        500
+
+      );
+
+
+    /*
+      GUARDAR CUANDO CAMBIAS
+      DE APLICACIÓN.
+    */
+
+    document.addEventListener(
+
+      "visibilitychange",
+
+      () => {
+
+        if (
+          document.hidden
+
+          &&
+
+          typeof emulator !==
+            "undefined"
+
+          &&
+
+          emulator
+        ) {
+
+          try {
+
+            emulator.saveState();
+
+          }
+
+          catch (error) {
+
+            console.log(
+              "Error al guardar al salir:",
+              error
+            );
+
+          }
+
+        }
+
+      }
+
+    );
+
+
+    /*
+      GUARDAR CUANDO SAFARI
+      CIERRA LA PÁGINA.
+    */
+
+    window.addEventListener(
+
+      "pagehide",
+
+      () => {
+
+        if (
+          typeof emulator !==
+            "undefined"
+
+          &&
+
+          emulator
+        ) {
+
+          try {
+
+            emulator.saveState();
+
+          }
+
+          catch (error) {
+
+            console.log(
+              "Error al cerrar:",
+              error
+            );
+
+          }
+
+        }
+
+      }
+
+    );
+
+  </script>
+
+</body>
+
+</html>
