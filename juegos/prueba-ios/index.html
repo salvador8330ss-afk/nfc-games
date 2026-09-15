@@ -108,6 +108,60 @@
   <script src=
   "https://cdn.jsdelivr.net/gh/binji/binjgb@main/docs/simple.js">
   </script>
+<script>
+  // Esperamos a que binjgb termine de cargar el emulador.
+  let estadoRestaurado = false;
 
+  const esperarEmulador = setInterval(() => {
+    if (emulator && !estadoRestaurado) {
+
+      estadoRestaurado = true;
+      clearInterval(esperarEmulador);
+
+      // Si existe una partida anterior, la recuperamos automáticamente.
+      if (localStorage.getItem("saveState")) {
+        try {
+          emulator.loadState();
+          console.log("Partida restaurada");
+        } catch (error) {
+          console.log("No se pudo restaurar la partida:", error);
+        }
+      }
+
+      // Guardar automáticamente cada 10 segundos.
+      setInterval(() => {
+        try {
+          if (emulator) {
+            emulator.saveState();
+            console.log("Partida guardada automáticamente");
+          }
+        } catch (error) {
+          console.log("Error al guardar:", error);
+        }
+      }, 10000);
+    }
+  }, 500);
+
+  // Guardar también cuando sales de Safari o cambias de aplicación.
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden && emulator) {
+      try {
+        emulator.saveState();
+      } catch (error) {
+        console.log("Error al guardar al salir:", error);
+      }
+    }
+  });
+
+  window.addEventListener("pagehide", () => {
+    if (emulator) {
+      try {
+        emulator.saveState();
+      } catch (error) {
+        console.log("Error al cerrar:", error);
+      }
+    }
+  });
+</script>
 </body>
 </html>
