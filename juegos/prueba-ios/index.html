@@ -1,1 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
 
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  <title>Prueba iPhone - NFC Games</title>
+
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/binji/binjgb@main/docs/simple.css">
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #000;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="game">
+    <canvas
+      id="mainCanvas"
+      width="160"
+      height="144">
+    </canvas>
+  </div>
+
+  <div id="controller">
+
+    <div id="controller_dpad">
+      <div id="controller_left"></div>
+      <div id="controller_right"></div>
+      <div id="controller_up"></div>
+      <div id="controller_down"></div>
+    </div>
+
+    <div id="controller_select"
+         class="capsuleBtn">
+      Select
+    </div>
+
+    <div id="controller_start"
+         class="capsuleBtn">
+      Start
+    </div>
+
+    <div id="controller_b"
+         class="roundBtn">
+      B
+    </div>
+
+    <div id="controller_a"
+         class="roundBtn">
+      A
+    </div>
+
+  </div>
+
+
+  <script>
+    /*
+      binjgb normalmente busca una ROM llamada
+      "porklike.gb".
+
+      Aquí interceptamos únicamente esa petición
+      y le indicamos que utilice nuestra ROM:
+      /roms/juego-1.gb
+    */
+
+    const fetchOriginal = window.fetch.bind(window);
+
+    window.fetch = function(recurso, opciones) {
+
+      const url =
+        typeof recurso === "string"
+        ? recurso
+        : recurso.url;
+
+      if (url.endsWith("porklike.gb")) {
+
+        return fetchOriginal(
+          "../../roms/juego-1.gb",
+          opciones
+        );
+
+      }
+
+      return fetchOriginal(
+        recurso,
+        opciones
+      );
+    };
+  </script>
+
+
+  <script src=
+  "https://cdn.jsdelivr.net/gh/binji/binjgb@main/docs/binjgb.js">
+  </script>
+
+  <script src=
+  "https://cdn.jsdelivr.net/gh/binji/binjgb@main/docs/simple.js">
+  </script>
+
+</body>
+</html>
