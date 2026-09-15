@@ -11,7 +11,6 @@
 
   <title>Juego 2 - NFC Games</title>
 
-  <!-- ESTILOS DE BINJGB -->
   <link
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/gh/binji/binjgb@main/docs/simple.css"
@@ -33,7 +32,6 @@
 
 <body>
 
-  <!-- PANTALLA DEL JUEGO -->
   <div id="game">
     <canvas
       id="mainCanvas"
@@ -43,7 +41,6 @@
   </div>
 
 
-  <!-- CONTROLES -->
   <div id="controller">
 
     <div id="controller_dpad">
@@ -80,22 +77,8 @@
   </div>
 
 
-  <!-- ======================================== -->
-  <!-- SELECCIONAR LA ROM                       -->
-  <!-- ======================================== -->
-
+  <!-- ROM DEL JUEGO 2 -->
   <script>
-
-    /*
-      BINJGB normalmente intenta cargar:
-
-      porklike.gb
-
-      Nosotros interceptamos esa petición
-      para que cargue:
-
-      /roms/juego-2.gb
-    */
 
     const fetchOriginal =
       window.fetch.bind(window);
@@ -129,21 +112,18 @@
   </script>
 
 
-  <!-- ======================================== -->
-  <!-- PARTIDA INDEPENDIENTE DE JUEGO 2        -->
-  <!-- ======================================== -->
-
+  <!-- GUARDADO INDEPENDIENTE DEL JUEGO 2 -->
   <script>
 
     (() => {
 
       /*
-        ESTE NOMBRE IDENTIFICA EL GUARDADO
-        DE ESTE JUEGO.
+        Usamos una clave nueva y limpia.
+        NO copiamos ninguna partida anterior.
       */
 
       const PREFIJO =
-        "juego-2_";
+        "juego-2-v2_";
 
 
       const getOriginal =
@@ -179,56 +159,7 @@
       }
 
 
-      /*
-        MIGRAR UN GUARDADO ANTIGUO
-        SOLO SI EXISTIERA.
-      */
-
-      clavesDelJuego.forEach(
-
-        (clave) => {
-
-          const claveNueva =
-            PREFIJO + clave;
-
-          const guardadoNuevo =
-
-            getOriginal.call(
-              localStorage,
-              claveNueva
-            );
-
-          const guardadoAnterior =
-
-            getOriginal.call(
-              localStorage,
-              clave
-            );
-
-          if (
-            guardadoNuevo === null &&
-            guardadoAnterior !== null
-          ) {
-
-            setOriginal.call(
-              localStorage,
-              claveNueva,
-              guardadoAnterior
-            );
-
-          }
-
-        }
-
-      );
-
-
-      /*
-        INTERCEPTAR LECTURA
-      */
-
       Storage.prototype.getItem =
-
         function(clave) {
 
           if (
@@ -248,12 +179,7 @@
         };
 
 
-      /*
-        INTERCEPTAR GUARDADO
-      */
-
       Storage.prototype.setItem =
-
         function(clave, valor) {
 
           if (
@@ -274,12 +200,7 @@
         };
 
 
-      /*
-        INTERCEPTAR BORRADO
-      */
-
       Storage.prototype.removeItem =
-
         function(clave) {
 
           if (
@@ -303,10 +224,7 @@
   </script>
 
 
-  <!-- ======================================== -->
-  <!-- CARGAR BINJGB                           -->
-  <!-- ======================================== -->
-
+  <!-- BINJGB -->
   <script
     src="https://cdn.jsdelivr.net/gh/binji/binjgb@main/docs/binjgb.js">
   </script>
@@ -316,10 +234,7 @@
   </script>
 
 
-  <!-- ======================================== -->
-  <!-- AUTOGUARDADO                            -->
-  <!-- ======================================== -->
-
+  <!-- AUTOGUARDADO -->
   <script>
 
     let estadoRestaurado =
@@ -333,15 +248,10 @@
         () => {
 
           if (
-            typeof emulator !==
-              "undefined"
-
+            typeof emulator !== "undefined"
             &&
-
             emulator
-
             &&
-
             !estadoRestaurado
           ) {
 
@@ -354,8 +264,8 @@
 
 
             /*
-              RECUPERAR AUTOMÁTICAMENTE
-              LA PARTIDA.
+              Solo restaura si ESTE juego
+              ya tiene una partida propia.
             */
 
             if (
@@ -369,7 +279,7 @@
                 emulator.loadState();
 
                 console.log(
-                  "Partida restaurada"
+                  "Partida de Juego 2 restaurada"
                 );
 
               }
@@ -387,8 +297,7 @@
 
 
             /*
-              GUARDAR AUTOMÁTICAMENTE
-              CADA 10 SEGUNDOS.
+              AUTOGUARDADO CADA 10 SEGUNDOS
             */
 
             setInterval(
@@ -402,7 +311,7 @@
                     emulator.saveState();
 
                     console.log(
-                      "Partida guardada automáticamente"
+                      "Juego 2 guardado automáticamente"
                     );
 
                   }
@@ -434,8 +343,7 @@
 
 
     /*
-      GUARDAR CUANDO CAMBIAS
-      DE APLICACIÓN.
+      GUARDAR AL CAMBIAR DE APP
     */
 
     document.addEventListener(
@@ -446,14 +354,9 @@
 
         if (
           document.hidden
-
           &&
-
-          typeof emulator !==
-            "undefined"
-
+          typeof emulator !== "undefined"
           &&
-
           emulator
         ) {
 
@@ -480,8 +383,7 @@
 
 
     /*
-      GUARDAR CUANDO SAFARI
-      CIERRA LA PÁGINA.
+      GUARDAR AL CERRAR SAFARI
     */
 
     window.addEventListener(
@@ -491,11 +393,8 @@
       () => {
 
         if (
-          typeof emulator !==
-            "undefined"
-
+          typeof emulator !== "undefined"
           &&
-
           emulator
         ) {
 
