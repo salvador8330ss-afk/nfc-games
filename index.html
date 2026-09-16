@@ -33,16 +33,15 @@
 
       display: flex;
       justify-content: center;
-      align-items: center;
 
-      padding: 25px;
+      padding: 30px 20px;
 
     }
 
     .contenedor {
 
       width: 100%;
-      max-width: 420px;
+      max-width: 430px;
 
       text-align: center;
 
@@ -50,13 +49,14 @@
 
     h1 {
 
-      margin-bottom: 8px;
+      margin-bottom: 5px;
+      font-size: 32px;
 
     }
 
-    p {
+    .subtitulo {
 
-      color: #bbb;
+      color: #aaa;
       margin-bottom: 30px;
 
     }
@@ -67,9 +67,9 @@
 
       width: 100%;
 
-      padding: 18px;
+      padding: 18px 15px;
 
-      margin-bottom: 15px;
+      margin-bottom: 14px;
 
       background: #222;
 
@@ -80,8 +80,23 @@
 
       text-decoration: none;
 
-      font-size: 18px;
+      font-size: 17px;
       font-weight: bold;
+
+      transition: 0.1s;
+
+    }
+
+    .numero {
+
+      display: block;
+
+      margin-top: 5px;
+
+      color: #888;
+
+      font-size: 12px;
+      font-weight: normal;
 
     }
 
@@ -89,14 +104,19 @@
 
       transform: scale(0.98);
 
+      background: #333;
+
     }
 
     .nota {
 
-      margin-top: 35px;
+      margin-top: 30px;
+
+      color: #777;
 
       font-size: 13px;
-      color: #777;
+
+      line-height: 1.5;
 
     }
 
@@ -113,16 +133,20 @@
 
     <h1>NFC Games</h1>
 
-    <p>
+    <div class="subtitulo">
       Panel de pruebas
-    </p>
+    </div>
 
 
     <a
       class="juego"
       href="./juegos/juego-1/">
 
-      Juego 1
+      Pokémon Rojo
+
+      <span class="numero">
+        Juego 1
+      </span>
 
     </a>
 
@@ -131,7 +155,12 @@
       class="juego"
       href="./juegos/juego-2/">
 
-      Juego 2
+      The Legend of Zelda:
+      Link's Awakening
+
+      <span class="numero">
+        Juego 2
+      </span>
 
     </a>
 
@@ -140,7 +169,11 @@
       class="juego"
       href="./juegos/juego-3/">
 
-      Juego 3
+      Donkey Kong Country
+
+      <span class="numero">
+        Juego 3
+      </span>
 
     </a>
 
@@ -149,7 +182,11 @@
       class="juego"
       href="./juegos/juego-4/">
 
-      Juego 4
+      Pokémon Amarillo
+
+      <span class="numero">
+        Juego 4
+      </span>
 
     </a>
 
@@ -158,7 +195,11 @@
       class="juego"
       href="./juegos/juego-5/">
 
-      Juego 5
+      Super Mario Land 2
+
+      <span class="numero">
+        Juego 5
+      </span>
 
     </a>
 
@@ -167,7 +208,11 @@
       class="juego"
       href="./juegos/juego-6/">
 
-      Juego 6
+      Tetris 2
+
+      <span class="numero">
+        Juego 6
+      </span>
 
     </a>
 
